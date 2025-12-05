@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Cumpleaños</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Fondo con ondas de sonido */
+        .background-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c9a85c, transparent);
+            animation: waveMove 3s infinite ease-in-out;
+        }
+
+        .wave:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .wave:nth-child(2) { top: 40%; animation-delay: 0.5s; }
+        .wave:nth-child(3) { top: 60%; animation-delay: 1s; }
+        .wave:nth-child(4) { top: 80%; animation-delay: 1.5s; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header con foto principal */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .photo-main {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #c9a85c;
+            box-shadow: 0 0 40px rgba(201, 168, 92, 0.3);
+            position: relative;
+        }
+
+        /* EDITAR: Cambia la URL de la foto principal aquí */
+        .photo-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #c9a85c, #f4e4c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            font-weight: 300;
+            color: #c9a85c;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .age-display {
+            font-size: 6em;
+            font-weight: 700;
+            color: #c9a85c;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(201, 168, 92, 0.5);
+        }
+
+        /* Sección de información */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #1a1a1a, #252525);
+            border: 1px solid #c9a85c;
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201, 168, 92, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .info-card:hover::before {
+            left: 100%;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(201, 168, 92, 0.3);
+            border-color: #f4e4c1;
+        }
+
+        .info-icon {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            display: block;
+            filter: grayscale(100%) brightness(2);
+        }
+
+        .info-card h3 {
+            color: #c9a85c;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-card p {
+            color: #d0d0d0;
+            line-height: 1.8;
+            font-size: 1.05em;
+            font-weight: 300;
+        }
+
+        .info-card strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Galería de fotos */
+        .photo-gallery {
+            margin: 80px 0;
+        }
+
+        .gallery-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            text-align: center;
+            color: #c9a85c;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #c9a85c;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        /* EDITAR: Cambia las URLs de las fotos de la galería aquí */
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:hover {
+            box-shadow: 0 10px 40px rgba(201, 168, 92, 0.4);
+            border-color: #f4e4c1;
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        /* Vinilo decorativo */
+        .vinyl-decoration {
+            width: 150px;
+            height: 150px;
+            margin: 60px auto;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a1a1a 30%, #c9a85c 31%, #c9a85c 32%, #0a0a0a 33%);
+            position: relative;
+            animation: spin 8s linear infinite;
+        }
+
+        .vinyl-decoration::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #c9a85c;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Botón CTA */
+        .cta-button {
+            display: block;
+            width: fit-content;
+            margin: 60px auto;
+            padding: 20px 60px;
+            background: linear-gradient(135deg, #c9a85c, #b89748);
+            color: #0a0a0a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid #c9a85c;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: #c9a85c;
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(201, 168, 92, 0.4);
+        }
+
+        /* Líneas decorativas */
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c9a85c, transparent);
+            margin: 40px auto;
+        }
+
+        @keyframes waveMove {
+            0%, 100% { transform: scaleX(0.8); opacity: 0.5; }
+            50% { transform: scaleX(1.2); opacity: 1; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5em; }
+            .age-display { font-size: 4em; }
+            .photo-main { width: 200px; height: 200px; }
+            .info-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ondas de sonido de fondo -->
+    <div class="background-waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="photo-main">
+                <!-- EDITAR: Descomenta la línea de abajo y cambia "URL_DE_TU_FOTO" por la URL de tu foto -->
+                <!-- <img src="URL_DE_TU_FOTO" alt="Foto"> -->
+                <div class="photo-placeholder">🎧</div>
+            </div>
+            
+            <!-- EDITAR: Cambia el nombre aquí -->
+            <h1 class="hero-title">CELEBRACIÓN</h1>
+            <!-- EDITAR: Cambia la edad aquí -->
+            <div class="age-display">17</div>
+            <div class="divider"></div>
+            <!-- EDITAR: Cambia el nombre del cumpleañero aquí -->
+            <p class="hero-subtitle">Te invito a celebrar conmigo</p>
+        </div>
+
+        <!-- Información del evento -->
+        <div class="info-grid">
+            <div class="info-card">
+                <span class="info-icon">📅</span>
+                <h3>Fecha</h3>
+                <!-- EDITAR: Cambia la fecha aquí -->
+                <p><strong>Sábado, 15 de Diciembre</strong><br>2024</p>
+            </div>
+
+            <div class="info-card">
+                <span class="info-icon">🕐</span>
+                <h3>Hora</h3>
+                <!-- EDITAR: Cambia la hora aquí -->
+                <p><strong>20:00 hrs</strong><br>Puntualidad apreciada</p>
+            </div>
+
+            <div class="info-card">
+                <span class="info-icon">📍</span>
+                <h3>Ubicación</h3>
+                <!-- EDITAR: Cambia la dirección aquí -->
+                <p><strong>Salón de Eventos</strong><br>Calle Principal #123<br>Ocotlán, Jalisco</p>
+            </div>
+
+            <div class="info-card">
+                <span class="info-icon">🎵</span>
+                <h3>Música</h3>
+                <!-- EDITAR: Cambia los detalles de la música aquí -->
+                <p><strong>DJ Profesional</strong><br>Los mejores géneros<br>Pista de baile abierta</p>
+            </div>
+
+            <div class="info-card">
+                <span class="info-icon">🍽️</span>
+                <h3>Catering</h3>
+                <!-- EDITAR: Cambia el menú aquí -->
+                <p><strong>Cena & Coctelería</strong><br>Menú selecto<br>Barra libre</p>
+            </div>
+
+            <div class="info-card">
+                <span class="info-icon">👔</span>
+                <h3>Dress Code</h3>
+                <!-- EDITAR: Cambia el código de vestimenta aquí -->
+                <p><strong>Formal / Elegante</strong><br>Semi formal aceptado<br>Sin jeans ni tenis</p>
+            </div>
+        </div>
+
+        <!-- Vinilo decorativo -->
+        <div class="vinyl-decoration"></div>
+
+        <!-- Galería de fotos -->
+        <div class="photo-gallery">
+            <h2 class="gallery-title">Momentos</h2>
+            <div class="gallery-grid">
+                <!-- EDITAR: Para cada foto, descomenta <img> y cambia "URL_FOTO_X" por tu URL -->
+                <div class="gallery-item">
+                    <!-- <img src="URL_FOTO_1" alt="Foto 1"> -->
+                    <div class="gallery-placeholder">🎸</div>
+                </div>
+                <div class="gallery-item">
+                    <!-- <img src="URL_FOTO_2" alt="Foto 2"> -->
+                    <div class="gallery-placeholder">🎤</div>
+                </div>
+                <div class="gallery-item">
+                    <!-- <img src="URL_FOTO_3" alt="Foto 3"> -->
+                    <div class="gallery-placeholder">🎹</div>
+                </div>
+                <div class="gallery-item">
+                    <!-- <img src="URL_FOTO_4" alt="Foto 4"> -->
+                    <div class="gallery-placeholder">🥁</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- EDITAR: Cambia el número de WhatsApp aquí (formato: 52 + 10 dígitos) -->
+        <a href="https://wa.me/5213921234567?text=Confirmo%20mi%20asistencia%20a%20tu%20celebración" class="cta-button">
+            Confirmar Asistencia
+        </a>
+    </div>
+</body>
+</html>
